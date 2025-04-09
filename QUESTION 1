@@ -1,0 +1,68 @@
+// FIND MIDDLE OF THE LINKED LIST WITHOUT USING LINK OF THE LINKED LIST
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct ListNode {
+    int value;
+    struct ListNode *next;
+};
+
+int findMiddle(struct ListNode *head) {
+    struct ListNode *slow = head;
+    struct ListNode *fast = head;
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;          
+        fast = fast->next->next;    
+    }
+    return slow->value;
+}
+
+struct ListNode* createNode(int value) {
+    struct ListNode *newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newNode->value = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct ListNode* createLinkedList(int n) {
+    if (n <= 0) return NULL;
+    int value;
+    struct ListNode *head = NULL, *temp = NULL, *prev = NULL;
+    for (int i = 0; i < n; i++) {
+        printf("Enter value for node %d: ", i + 1);
+        scanf("%d", &value);
+        temp = createNode(value);
+        if (i == 0) {
+            head = temp;  // First node
+        } else {
+            prev->next = temp; // Link previous node to current node
+        }
+        prev = temp;
+    }
+    return head;
+}
+
+void freeList(struct ListNode *head) {
+    struct ListNode *temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of nodes in the linked list: ");
+    scanf("%d", &n);
+    struct ListNode *head = createLinkedList(n);
+    if (head != NULL) {
+        int middle = findMiddle(head);
+        printf("Middle of the linked list is: %d\n", middle);
+    } else {
+        printf("The linked list is empty.\n");
+    }
+    freeList(head);
+    return 0;
+}
